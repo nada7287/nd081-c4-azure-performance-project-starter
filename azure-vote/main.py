@@ -25,24 +25,23 @@ from applicationinsights import TelemetryClient
 #logger =    # TODO: Setup logger
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
-connectionString='InstrumentationKey=dc5bfc54-1492-408f-870d-ed6142af3a70'
-handler = AzureLogHandler(connection_string=connectionString)
+handler = AzureLogHandler(connection_string='InstrumentationKey=dc5bfc54-1492-408f-870d-ed6142af3a70')
 handler.setFormatter(logging.Formatter('%(traceId)s %(spanId)s %(message)s'))
 logger.addHandler(handler)
 # Metricsssss
 #exporter = # TODO: Setup exporter
-exporter = metrics_exporter.new_metrics_exporter(enable_standard_metrics=True,connection_string=connectionString)
+exporter = metrics_exporter.new_metrics_exporter(enable_standard_metrics=True,connection_string='InstrumentationKey=dc5bfc54-1492-408f-870d-ed6142af3a70')
 
 
 # Tracing
 #tracer = # TODO: Setup tracer
 
-tracer = Tracer(exporter=AzureExporter(connection_string=connectionString),sampler=ProbabilitySampler(1.0))
+tracer = Tracer(exporter=AzureExporter(connection_string="InstrumentationKey=dc5bfc54-1492-408f-870d-ed6142af3a70"),sampler=ProbabilitySampler(1.0))
 app = Flask(__name__)
 
 # Requests
 #middleware = # TODO: Setup flask middleware
-middleware = FlaskMiddleware(app,exporter=AzureExporter(connection_string=connectionString),sampler=ProbabilitySampler(rate=1.0),)
+middleware = FlaskMiddleware(app,exporter=AzureExporter(connection_string='InstrumentationKey=dc5bfc54-1492-408f-870d-ed6142af3a70'),sampler=ProbabilitySampler(rate=1.0),)
 # Load configurations from environment or config file
 app.config.from_pyfile('config_file.cfg')
 
