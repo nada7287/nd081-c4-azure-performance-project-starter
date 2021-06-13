@@ -24,6 +24,7 @@ from opencensus.ext.flask.flask_middleware import FlaskMiddleware
 # Logging
 #logger =    # TODO: Setup logger
 logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
 connectionString='InstrumentationKey=dc5bfc54-1492-408f-870d-ed6142af3a70'
 handler = AzureLogHandler(connection_string=connectionString)
 handler.setFormatter(logging.Formatter('%(traceId)s %(spanId)s %(message)s'))
@@ -33,7 +34,8 @@ logger.addHandler(handler)
 exporter = metrics_exporter.new_metrics_exporter(enable_standard_metrics=True,connection_string=connectionString)
 # Tracing
 #tracer = # TODO: Setup tracer
-tracer = Tracer(exporter=AzureExporter(connection_string=connectionString),sampler=ProbabilitySampler(1.0),)
+
+tracer = Tracer(exporter=AzureExporter(connection_string=connectionString),sampler=ProbabilitySampler(1.0))
 app = Flask(__name__)
 
 # Requests
