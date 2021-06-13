@@ -24,7 +24,7 @@ from opencensus.ext.flask.flask_middleware import FlaskMiddleware
 # Logging
 #logger =    # TODO: Setup logger
 logger = logging.getLogger(__name__)
-connectionString='InstrumentationKey=InstrumentationKey=dc5bfc54-1492-408f-870d-ed6142af3a70;IngestionEndpoint=https://germanywestcentral-1.in.applicationinsights.azure.com/'
+connectionString='InstrumentationKey=dc5bfc54-1492-408f-870d-ed6142af3a70'
 handler = AzureLogHandler(connection_string=connectionString)
 handler.setFormatter(logging.Formatter('%(traceId)s %(spanId)s %(message)s'))
 logger.addHandler(handler)
@@ -95,12 +95,12 @@ def index():
             vote1 = r.get(button1).decode('utf-8')
             properties = {'custom_dimensions': {'Cats Vote': vote1}}
             # TODO: use logger object to log cat vote
-            logging.info('cat vote: '+properties)
+            logging.info('cat vote: '+ str(properties))
 
             vote2 = r.get(button2).decode('utf-8')
             properties = {'custom_dimensions': {'Dogs Vote': vote2}}
             # TODO: use logger object to log dog vote
-            logging.info('dog vote : '+properties)
+            logging.info('dog vote : '+ str(properties))
 
 
             return render_template("index.html", value1=int(vote1), value2=int(vote2), button1=button1, button2=button2, title=title)
@@ -120,8 +120,8 @@ def index():
 
 if __name__ == "__main__":
     # comment line below when deploying to VMSS
-    #app.run() # local
+    app.run() # local
     # uncomment the line below before deployment to VMSS
-    app.run(host='0.0.0.0', threaded=True, debug=True) # remote
+    #app.run(host='0.0.0.0', threaded=True, debug=True) # remote
     #app.run(host='20.98.99.217', threaded=True, debug=True) # remote
 
