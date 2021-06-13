@@ -24,20 +24,21 @@ from opencensus.ext.flask.flask_middleware import FlaskMiddleware
 # Logging
 #logger =    # TODO: Setup logger
 logger = logging.getLogger(__name__)
-handler = AzureLogHandler(connection_string='InstrumentationKey=efa47228-3692-40be-be06-d43d165e9b2e;IngestionEndpoint=https://germanywestcentral-1.in.applicationinsights.azure.com/')
+connectionString='InstrumentationKey=dc5bfc54-1492-408f-870d-ed6142af3a70;IngestionEndpoint=https://germanywestcentral-1.in.applicationinsights.azure.com/'
+handler = AzureLogHandler(connection_string=connectionString)
 handler.setFormatter(logging.Formatter('%(traceId)s %(spanId)s %(message)s'))
 logger.addHandler(handler)
 # Metricsssss
 #exporter = # TODO: Setup exporter
-exporter = metrics_exporter.new_metrics_exporter(enable_standard_metrics=True,connection_string='InstrumentationKey=efa47228-3692-40be-be06-d43d165e9b2e;IngestionEndpoint=https://germanywestcentral-1.in.applicationinsights.azure.com/')
+exporter = metrics_exporter.new_metrics_exporter(enable_standard_metrics=True,connection_string=connectionString)
 # Tracing
 #tracer = # TODO: Setup tracer
-tracer = Tracer(exporter=AzureExporter(connection_string='InstrumentationKey=efa47228-3692-40be-be06-d43d165e9b2e;IngestionEndpoint=https://germanywestcentral-1.in.applicationinsights.azure.com/'),sampler=ProbabilitySampler(1.0),)
+tracer = Tracer(exporter=AzureExporter(connection_string=connectionString),sampler=ProbabilitySampler(1.0),)
 app = Flask(__name__)
 
 # Requests
 #middleware = # TODO: Setup flask middleware
-middleware = FlaskMiddleware(app,exporter=AzureExporter(connection_string="InstrumentationKey=efa47228-3692-40be-be06-d43d165e9b2e;IngestionEndpoint=https://germanywestcentral-1.in.applicationinsights.azure.com/"),sampler=ProbabilitySampler(rate=1.0),)
+middleware = FlaskMiddleware(app,exporter=AzureExporter(connection_string=connectionString),sampler=ProbabilitySampler(rate=1.0),)
 # Load configurations from environment or config file
 app.config.from_pyfile('config_file.cfg')
 
