@@ -10,11 +10,7 @@ from datetime import datetime
 # TODO: Import required libraries for App Insights
 from opencensus.ext.azure.log_exporter import AzureLogHandler
 from opencensus.ext.azure import metrics_exporter
-from opencensus.stats import aggregation as aggregation_module
-from opencensus.stats import measure as measure_module
-from opencensus.stats import stats as stats_module
-from opencensus.stats import view as view_module
-from opencensus.tags import tag_map as tag_map_module
+
 from opencensus.ext.azure.trace_exporter import AzureExporter
 from opencensus.trace.samplers import ProbabilitySampler
 from opencensus.trace.tracer import Tracer
@@ -25,9 +21,13 @@ from opencensus.ext.azure.log_exporter import AzureEventHandler
 #logger =    # TODO: Setup logger
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
-handler = AzureLogHandler(connection_string='InstrumentationKey=254dee1c-caa6-457a-9d98-ba28e262ed15')
-handler.setFormatter(logging.Formatter('%(traceId)s %(spanId)s %(message)s'))
-logger.addHandler(handler)
+logHandler = AzureLogHandler(connection_string='InstrumentationKey=254dee1c-caa6-457a-9d98-ba28e262ed15')
+eventHandler = AzureEventHandler(connection_string='InstrumentationKey=254dee1c-caa6-457a-9d98-ba28e262ed15')
+
+#logHandler.setFormatter(logging.Formatter('%(traceId)s %(spanId)s %(message)s'))
+logger.addHandler(logHandler)
+logger.addHandler(eventHandler)
+
 # Metricsssss
 #exporter = # TODO: Setup exporter
 exporter = metrics_exporter.new_metrics_exporter(enable_standard_metrics=True,connection_string='InstrumentationKey=254dee1c-caa6-457a-9d98-ba28e262ed15')
@@ -36,7 +36,7 @@ exporter = metrics_exporter.new_metrics_exporter(enable_standard_metrics=True,co
 # Tracing
 #tracer = # TODO: Setup tracer
 
-tracer = Tracer(exporter=AzureExporter(connection_string="InstrumentationKey=254dee1c-caa6-457a-9d98-ba28e262ed15"),sampler=ProbabilitySampler(1.0))
+tracer = Tracer(exporter=AzureExporter(connection_string="InstrumentationKey=254dee1c-caa6-457a-9d98-ba28e262ed15"),sampler=ProbabilitySampler(1.0),)
 
 
 app = Flask(__name__)
