@@ -19,14 +19,14 @@ from opencensus.ext.azure.trace_exporter import AzureExporter
 from opencensus.trace.samplers import ProbabilitySampler
 from opencensus.trace.tracer import Tracer
 from opencensus.ext.flask.flask_middleware import FlaskMiddleware
-from opencensus import AzureEventHAndler
+from opencensus import AzureEventHandler
 from applicationinsights import TelemetryClient
 
 # Logging
 #logger =    # TODO: Setup logger
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
-handler = AzureEventHAndler(connection_string='InstrumentationKey=254dee1c-caa6-457a-9d98-ba28e262ed15')
+handler = AzureEventHandler(connection_string='InstrumentationKey=254dee1c-caa6-457a-9d98-ba28e262ed15')
 handler.setFormatter(logging.Formatter('%(traceId)s %(spanId)s %(message)s'))
 logger.addHandler(handler)
 # Metricsssss
