@@ -19,8 +19,7 @@ from opencensus.ext.azure.trace_exporter import AzureExporter
 from opencensus.trace.samplers import ProbabilitySampler
 from opencensus.trace.tracer import Tracer
 from opencensus.ext.flask.flask_middleware import FlaskMiddleware
-from opencensus import AzureEventHandler
-from applicationinsights import TelemetryClient
+from opencensus.ext.azure.log_exporter import AzureEventHandler
 
 # Logging
 #logger =    # TODO: Setup logger
@@ -38,7 +37,6 @@ exporter = metrics_exporter.new_metrics_exporter(enable_standard_metrics=True,co
 #tracer = # TODO: Setup tracer
 
 tracer = Tracer(exporter=AzureExporter(connection_string="InstrumentationKey=254dee1c-caa6-457a-9d98-ba28e262ed15"),sampler=ProbabilitySampler(1.0))
-tc = TelemetryClient('254dee1c-caa6-457a-9d98-ba28e262ed15')
 
 
 app = Flask(__name__)
@@ -84,14 +82,12 @@ def index():
         # TODO: use tracer object to trace cat vote
         logger.info('Cats')
         tracer.span(name="Cats")
-        tc.track_event("Cats")
-        tc.flush()
+        
         vote2 = r.get(button2).decode('utf-8')
         # TODO: use tracer object to trace dog vote
         logger.info('Dogs')
         tracer.span(name="Dogs")
-        tc.track_event("Dogs")
-        tc.flush()
+        
         # Return index with values
         return render_template("index.html", value1=int(vote1), value2=int(vote2), button1=button1, button2=button2, title=title)
 
@@ -130,8 +126,7 @@ def index():
 
 if __name__ == "__main__":
     # comment line below when deploying to VMSS
-    #app.run() # local
+    app.run() # local
     # uncomment the line below before deployment to VMSS
-    app.run(host='0.0.0.0', threaded=True, debug=True) # remote
-    #app.run(host='20.98.99.217', threaded=True, debug=True) # remote
+    #app.run(host='0.0.0.0', threaded=True, debug=True) # remote
 
