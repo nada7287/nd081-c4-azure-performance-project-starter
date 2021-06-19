@@ -19,31 +19,32 @@ from opencensus.ext.azure.trace_exporter import AzureExporter
 from opencensus.trace.samplers import ProbabilitySampler
 from opencensus.trace.tracer import Tracer
 from opencensus.ext.flask.flask_middleware import FlaskMiddleware
+from opencensus import AzureEventHAndler
 from applicationinsights import TelemetryClient
 
 # Logging
 #logger =    # TODO: Setup logger
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
-handler = AzureLogHandler(connection_string='InstrumentationKey=dc5bfc54-1492-408f-870d-ed6142af3a70')
+handler = AzureEventHAndler(connection_string='InstrumentationKey=254dee1c-caa6-457a-9d98-ba28e262ed15')
 handler.setFormatter(logging.Formatter('%(traceId)s %(spanId)s %(message)s'))
 logger.addHandler(handler)
 # Metricsssss
 #exporter = # TODO: Setup exporter
-exporter = metrics_exporter.new_metrics_exporter(enable_standard_metrics=True,connection_string='InstrumentationKey=dc5bfc54-1492-408f-870d-ed6142af3a70')
+exporter = metrics_exporter.new_metrics_exporter(enable_standard_metrics=True,connection_string='InstrumentationKey=254dee1c-caa6-457a-9d98-ba28e262ed15')
 
 
 # Tracing
 #tracer = # TODO: Setup tracer
 
-tracer = Tracer(exporter=AzureExporter(connection_string="InstrumentationKey=dc5bfc54-1492-408f-870d-ed6142af3a70"),sampler=ProbabilitySampler(1.0))
-tc = TelemetryClient('dc5bfc54-1492-408f-870d-ed6142af3a70')
+tracer = Tracer(exporter=AzureExporter(connection_string="InstrumentationKey=254dee1c-caa6-457a-9d98-ba28e262ed15"),sampler=ProbabilitySampler(1.0))
+tc = TelemetryClient('254dee1c-caa6-457a-9d98-ba28e262ed15')
 
 
 app = Flask(__name__)
 # Requests
 #middleware = # TODO: Setup flask middleware
-middleware = FlaskMiddleware(app,exporter=AzureExporter(connection_string='InstrumentationKey=dc5bfc54-1492-408f-870d-ed6142af3a70'),sampler=ProbabilitySampler(rate=1.0),)
+middleware = FlaskMiddleware(app,exporter=AzureExporter(connection_string='InstrumentationKey=254dee1c-caa6-457a-9d98-ba28e262ed15'),sampler=ProbabilitySampler(rate=1.0),)
 # Load configurations from environment or config file
 app.config.from_pyfile('config_file.cfg')
 
